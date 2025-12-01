@@ -35,7 +35,7 @@ export default function JsonViewer({ json }: Props) {
       </Toolbar>
 
       <div className="px-2 pb-2 h-full">
-        <pre className="text-sm bg-muted p-4 rounded-md h-full overflow-auto">
+        <pre className="text-sm bg-input/30 p-4 rounded-md h-full overflow-auto border">
           {json}
         </pre>
       </div>
