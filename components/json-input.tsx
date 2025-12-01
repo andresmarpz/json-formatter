@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Toolbar } from "@/components/ui/toolbar";
 import { usePreferences } from "@/state/preferences";
 import { jsonrepair } from "jsonrepair";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 
 type FormData = {
@@ -25,12 +26,17 @@ interface Props {
 
 export default function JsonInput({ onSubmit }: Props) {
   const preferences = usePreferences();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const form = useForm<FormData>({
     defaultValues: {
       json: "",
     },
   });
+
+  useEffect(() => {
+    textareaRef.current?.focus();
+  }, []);
 
   const handleSubmit = form.handleSubmit((data: FormData) => {
     let result = data.json;
@@ -67,8 +73,15 @@ export default function JsonInput({ onSubmit }: Props) {
                 <FormControl className="flex-1">
                   <Textarea
                     {...field}
+                    ref={textareaRef}
                     placeholder="Input your JSON here..."
                     className="resize-none h-full min-h-0"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                        e.preventDefault();
+                        handleSubmit();
+                      }
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
