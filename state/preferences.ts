@@ -14,7 +14,7 @@ type PreferencesStore = PreferencesState & PreferencesActions;
 export const usePreferences = create<PreferencesStore>()(
   persist(
     (set) => ({
-      repairJson: false,
+      repairJson: true,
       setRepairJson: (repairJson) => set({ repairJson }),
     }),
     {
