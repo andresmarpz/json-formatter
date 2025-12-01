@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { Toolbar } from "@/components/ui/toolbar";
 import { useForm } from "react-hook-form";
 
 type FormData = {
@@ -33,39 +34,43 @@ export default function JsonInput({ onSubmit }: Props) {
   );
 
   return (
-    <Form {...form}>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div>
-          example:
-          <pre className="text-sm bg-muted p-4 rounded-md">
-            {`{"user":{age:25152,"active" :false, greeting:true,"items":[{"value":2552}, 2525]},name:"example"}`}
-          </pre>
-        </div>
-        <span>
-          <PreferencesPopover />
-        </span>
-        <FormField
-          control={form.control}
-          name="json"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>JSON</FormLabel>
-              <FormControl>
-                <Textarea
-                  {...field}
-                  rows={10}
-                  placeholder="Input your JSON here..."
-                  className="resize-none"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" variant="outline" size="lg" className="max-w-2xs">
-          Format
-        </Button>
-      </form>
-    </Form>
+    <div className="flex flex-col h-full">
+      <Toolbar className="flex justify-between p-2">
+        <span />
+        <PreferencesPopover />
+      </Toolbar>
+
+      <Form {...form}>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col flex-1 px-2 pb-2 gap-2"
+        >
+          <FormField
+            control={form.control}
+            name="json"
+            render={({ field }) => (
+              <FormItem className="flex-1 flex flex-col">
+                <FormControl className="flex-1">
+                  <Textarea
+                    {...field}
+                    placeholder="Input your JSON here..."
+                    className="resize-none h-full min-h-0"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            variant="outline"
+            size="lg"
+            className="max-w-2xs"
+          >
+            Format
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 }
