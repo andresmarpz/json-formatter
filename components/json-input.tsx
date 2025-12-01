@@ -7,11 +7,12 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Toolbar } from "@/components/ui/toolbar";
+import { usePreferences } from "@/state/preferences";
+import { jsonrepair } from "jsonrepair";
 import { useForm } from "react-hook-form";
 
 type FormData = {
@@ -23,15 +24,28 @@ interface Props {
 }
 
 export default function JsonInput({ onSubmit }: Props) {
+  const preferences = usePreferences();
+
   const form = useForm<FormData>({
     defaultValues: {
       json: "",
     },
   });
 
-  const handleSubmit = form.handleSubmit((data: FormData) =>
-    onSubmit(data.json)
-  );
+  const handleSubmit = form.handleSubmit((data: FormData) => {
+    let result = data.json;
+    if (preferences.repairJson) {
+      result = jsonrepair(result);
+    }
+    try {
+      result = JSON.parse(result);
+      onSubmit(JSON.stringify(result, null, 2));
+    } catch (error: unknown) {
+      form.setError("json", {
+        message: (error as Error).message ?? "Invalid JSON",
+      });
+    }
+  });
 
   return (
     <div className="flex flex-col h-full">

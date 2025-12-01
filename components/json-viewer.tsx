@@ -1,9 +1,7 @@
-import { jsonrepair } from "jsonrepair";
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Toolbar } from "@/components/ui/toolbar";
 import { CodeIcon, CopyIcon, ListTreeIcon } from "lucide-react";
-import { useMemo } from "react";
 import { toast } from "sonner";
 
 interface Props {
@@ -16,12 +14,6 @@ export default function JsonViewer({ json }: Props) {
     navigator.clipboard.writeText(json);
     toast.success("JSON copied to clipboard.");
   }
-
-  const renderJson = useMemo(() => {
-    if (!json) return "";
-    const repaired = jsonrepair(json);
-    return JSON.stringify(JSON.parse(repaired), null, 2);
-  }, [json]);
 
   return (
     <div className="flex flex-col h-full">
@@ -44,7 +36,7 @@ export default function JsonViewer({ json }: Props) {
 
       <div className="px-2 pb-2 h-full">
         <pre className="text-sm bg-muted p-4 rounded-md h-full overflow-auto">
-          {renderJson}
+          {json}
         </pre>
       </div>
     </div>

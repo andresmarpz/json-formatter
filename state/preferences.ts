@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 interface PreferencesState {
   repairJson: boolean;
@@ -8,9 +9,17 @@ interface PreferencesActions {
   setRepairJson: (repairJson: boolean) => void;
 }
 
-export const usePreferences = create<PreferencesState & PreferencesActions>(
-  (set) => ({
-    repairJson: false,
-    setRepairJson: (repairJson) => set({ repairJson }),
-  })
+type PreferencesStore = PreferencesState & PreferencesActions;
+
+export const usePreferences = create<PreferencesStore>()(
+  persist(
+    (set) => ({
+      repairJson: false,
+      setRepairJson: (repairJson) => set({ repairJson }),
+    }),
+    {
+      name: "preferences",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
 );

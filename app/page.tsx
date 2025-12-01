@@ -7,9 +7,7 @@ import { useState } from "react";
 export default function Home() {
   const [result, setResult] = useState<string>("");
 
-  const onSubmit = (json: string) => {
-    setResult(json);
-  };
+  const onSubmit = (json: string) => setResult(json);
 
   return (
     <div className="flex min-h-screen flex-col font-sans max-w-[1600px] mx-auto py-16 gap-8">
