@@ -9,6 +9,8 @@ export default function Home() {
 
   const onSubmit = (json: string) => setResult(json);
 
+  const isDev = process.env.NODE_ENV === "development";
+
   return (
     <div className="flex min-h-screen flex-col font-sans max-w-[1600px] mx-auto py-16 gap-8">
       <div>
@@ -16,12 +18,14 @@ export default function Home() {
         <p className="text-sm text-muted-foreground">
           Fix your broken JSON with ease.
         </p>
-        <div>
-          example:
-          <pre className="text-sm bg-muted p-4 rounded-md">
-            {`{"user":{age:25152,"active" :false, greeting:true,"items":[{"value":2552}, 2525]},name:"example"}`}
-          </pre>
-        </div>
+        {isDev && (
+          <div>
+            example:
+            <pre className="text-sm bg-muted p-4 rounded-md">
+              {`{"user":{age:25152,"active" :false, greeting:true,"items":[{"value":2552}, 2525]},name:"example"}`}
+            </pre>
+          </div>
+        )}
       </div>
 
       <div className="border border-border rounded-md grid grid-cols-[1fr_auto_1fr] min-h-[500px]">
